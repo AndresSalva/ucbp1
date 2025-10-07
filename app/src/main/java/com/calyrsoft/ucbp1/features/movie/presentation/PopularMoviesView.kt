@@ -48,7 +48,7 @@ fun CardMovie(movie: MovieModel, viewModel: PopularMoviesViewModel) {
     OutlinedCard(
         modifier = Modifier
             .padding(4.dp)
-            .fillMaxSize(),
+            .fillMaxWidth(),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
         elevation = androidx.compose.material3.CardDefaults.cardElevation(6.dp)
     ) {
@@ -87,16 +87,18 @@ fun StarRating(
     onRatingChanged: (Int) -> Unit
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 1..5) {
-            IconButton(onClick = { onRatingChanged(i) }) {
+            IconButton(onClick = { val newRating = if (i == rating) 0 else i
+                onRatingChanged(newRating)},
+                modifier =Modifier.size(32.dp)) {
                 Icon(
                     imageVector = if (i <= rating) Icons.Filled.Star else Icons.Outlined.Star,
                     contentDescription = "$i estrellas",
                     tint = if (i <= rating) Color(0xFFFFC107) else Color.Gray, // amarillo y gris
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
