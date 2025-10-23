@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.calyrsoft.ucbp1.features.dollar.domain.usecase.FetchDollarParallelUseCase
+import com.calyrsoft.ucbp1.features.dollar.domain.usecase.UpdateDollarUseCase
 
 class DollarViewModel(
     val fetchDollarUseCase: FetchDollarUseCase,
-    val fetchDollarParallelUseCase: FetchDollarParallelUseCase
+    val fetchDollarParallelUseCase: FetchDollarParallelUseCase,
+    val firebaseUseCase: UpdateDollarUseCase
 ): ViewModel() {
 
     sealed class DollarUIState {
@@ -45,6 +47,17 @@ class DollarViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             fetchDollarParallelUseCase.invoke().collect {
                     data -> _uiStateParallel.value = DollarUIState.Success(data) }
+        }
+    }
+
+    fun updateDollar(value: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            firebaseUseCase.udpateDollar(
+                DollarModel(
+                    purchasePrice = value,
+                    salesPrice = ""
+                )
+            )
         }
     }
 }
