@@ -1,10 +1,11 @@
 package com.calyrsoft.ucbp1.di
 
+import com.calyrsoft.ucbp1.MainViewModel
 import com.calyrsoft.ucbp1.R
 import com.calyrsoft.ucbp1.features.dollar.data.database.AppRoomDatabase
 import com.calyrsoft.ucbp1.features.dollar.data.datasource.DollarLocalDataSource
-import com.calyrsoft.ucbp1.features.dollar.data.repository.DollarRepository
 import com.calyrsoft.ucbp1.features.dollar.data.datasource.RealTimeRemoteDataSource
+import com.calyrsoft.ucbp1.features.dollar.data.repository.DollarRepository
 import com.calyrsoft.ucbp1.features.dollar.domain.repository.IDollarRepository
 import com.calyrsoft.ucbp1.features.dollar.domain.usecase.FetchDollarParallelUseCase
 import com.calyrsoft.ucbp1.features.dollar.domain.usecase.FetchDollarUseCase
@@ -20,6 +21,10 @@ import com.calyrsoft.ucbp1.features.login.data.repository.RepositoryDataStore
 import com.calyrsoft.ucbp1.features.login.domain.repository.IRepositoryDataStore
 import com.calyrsoft.ucbp1.features.login.domain.usecase.GetTokenUseCase
 import com.calyrsoft.ucbp1.features.login.domain.usecase.SaveTokenUseCase
+import com.calyrsoft.ucbp1.features.maintenance.data.datasource.MaintenanceRemoteDataSource
+import com.calyrsoft.ucbp1.features.maintenance.data.repository.MaintenanceRepository
+import com.calyrsoft.ucbp1.features.maintenance.domain.repository.IMaintenanceRepository
+import com.calyrsoft.ucbp1.features.maintenance.domain.usecase.GetMaintenanceStatusUseCase
 import com.calyrsoft.ucbp1.features.movie.data.api.MovieService
 import com.calyrsoft.ucbp1.features.movie.data.datasource.MovieLocalDataSource
 import com.calyrsoft.ucbp1.features.movie.data.datasource.MovieRemoteDataSource
@@ -34,7 +39,6 @@ import com.calyrsoft.ucbp1.features.profile.domain.repository.IProfileRepository
 import com.calyrsoft.ucbp1.features.profile.domain.usecase.GetProfileUseCase
 import com.calyrsoft.ucbp1.navigation.NavigationViewModel
 import okhttp3.OkHttpClient
-import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -52,8 +56,6 @@ object NetworkConstants {
 }
 
 val appModule = module {
-
-
     // OkHttpClient
     single {
         OkHttpClient.Builder()
@@ -125,4 +127,12 @@ val appModule = module {
     single<IRepositoryDataStore>{RepositoryDataStore(get())}
     factory { GetTokenUseCase(get()) }
     factory { SaveTokenUseCase(get()) }
+
+    // ===============================================
+    //      NUEVO MÓDULO DE MANTENIMIENTO
+    // ===============================================
+    single { MaintenanceRemoteDataSource() }
+    single<IMaintenanceRepository> { MaintenanceRepository(get()) }
+    factory { GetMaintenanceStatusUseCase(get()) }
+    single { MainViewModel(get()) }
 }

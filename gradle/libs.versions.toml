@@ -5,7 +5,7 @@ converterGson = "3.0.0"
 koinAndroid = "3.3.0"
 koinAndroidxCompose = "3.3.0"
 koinAndroidxNavigation = "3.3.0"
-kotlin = "2.0.21"
+kotlin = "2.0.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -18,11 +18,18 @@ mockk = "1.13.8"
 retrofit = "3.0.0"
 navcompose = "2.9.3"
 googleGmsGoogleServices = "4.4.3"
-firebaseDatabase = "22.0.0"
 ksp = "2.0.20-1.0.24"
 room = "2.8.0"
-firebaseMessaging = "25.0.0"
 datastore = "1.0.0"
+kotlinx-serialization = "1.7.3"
+
+## AÑADIDO: Versión para el Firebase Bill of Materials (BoM)
+firebaseBom = "33.1.0"
+
+## ELIMINADOS: Estas versiones ya no son necesarias, el BoM las gestionará
+# firebaseDatabase = "22.0.0"
+# firebaseMessaging = "25.0.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,8 +56,15 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navcompose"}
-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+## AÑADIDO: Librería para el Firebase BoM
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+
+## MODIFICADO: Cambiamos a la versión -ktx y eliminamos la versión explícita
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+
 #room
 room-runtime = { group="androidx.room", name="room-runtime", version.ref="room"}
 room-compiler = { group="androidx.room", name="room-compiler", version.ref="room"}
@@ -60,15 +74,15 @@ room-rxjava3 = { group="androidx.room", name="room-rxjava3", version.ref="room"}
 room-guava = { group="androidx.room", name="room-guava", version.ref="room"}
 room-testing = { group="androidx.room", name="room-testing", version.ref="room"}
 room-paging = { group="androidx.room", name="room-paging", version.ref="room"}
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-
 ksp = { id = "com.google.devtools.ksp", version.ref="ksp"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 local = ["room-runtime", "room-ktx", "room-rxjava2", "room-rxjava3", "room-guava", "room-paging" ]

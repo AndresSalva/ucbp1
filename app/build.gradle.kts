@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.ksp)
-
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -44,6 +44,20 @@ android {
 
 dependencies {
 
+    // --- [INICIO DE LA MODIFICACIÓN] ---
+
+    // 1. Añadimos la plataforma Firebase BoM (Bill of Materials).
+    // Esto gestiona las versiones de todas las librerías de Firebase para que sean compatibles.
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // Reemplaza libs.firebase.bom si no lo tienes
+
+    // 2. Cambiamos las dependencias de Firebase para usar las versiones KTX (Kotlin Extensions).
+    implementation(libs.firebase.database.ktx) // Asumiendo que libs.firebase.database.ktx está en tu TOML
+    implementation(libs.firebase.messaging.ktx) // Asumiendo que libs.firebase.messaging.ktx está en tu TOML
+
+    // --- [FIN DE LA MODIFICACIÓN] ---
+
+    implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -52,8 +66,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.messaging)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,9 +83,8 @@ dependencies {
     implementation(libs.coil.network)
     implementation(libs.androidx.navigation.compose)
 
-    //local bundle room
     implementation(libs.bundles.local)
-    annotationProcessor(libs.room.compiler)
+
     ksp(libs.room.compiler)
     testImplementation(libs.room.testing)
 
@@ -80,6 +92,4 @@ dependencies {
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-
-
 }
