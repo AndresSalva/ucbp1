@@ -15,10 +15,16 @@ interface IMovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: MovieEntity)
 
+    @androidx.room.Update
+    suspend fun update(movie: MovieEntity)
+
 
     @Query("DELETE FROM movies")
     suspend fun deleteAll()
 
     @Query("SELECT rate FROM movies WHERE id = :movieId LIMIT 1")
     suspend fun getRatingForMovie(movieId: Int): Int?
+
+    @Query("SELECT * FROM movies WHERE id = :movieId LIMIT 1")
+    suspend fun getMovie(movieId: Int): MovieEntity?
 }

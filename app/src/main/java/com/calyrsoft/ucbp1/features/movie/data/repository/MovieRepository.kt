@@ -14,12 +14,16 @@ class MovieRepository(
           val remoteMovies = movieRemoteDataSource.fetchPopularMovies()
           remoteMovies.fold(
               onSuccess = { movies ->
-                  val rateMovies = movies.map { movie ->
-                      val rating = movieLocalDataSource.getRatingForMovie(movie.id)
-                      movie.copy(  rating = rating)
+                  val updatedMovies = movies.map { remoteMovie ->
+                      val localMovie = movieLocalDataSource.getMovie(remoteMovie.id)
+                      if (localMovie != null) {
+                          remoteMovie.copy(rating = localMovie.rate, isFavorite = localMovie.isFavorite)
+                      } else {
+                          remoteMovie
+                      }
                   }
-                      .sortedByDescending { it.rating }
-                  Result.success(rateMovies)
+                  val sortedMovies = updatedMovies.sortedByDescending { it.rating }
+                  Result.success(sortedMovies)
               },
               onFailure = {
                 Result.failure(it)
@@ -36,6 +40,11 @@ class MovieRepository(
         movieLocalDataSource.rate(movieId, rating)
         return Result.success(Unit)
 
+    }
+
+    override suspend fun updateMovie(movie: MovieModel): Result<Unit> {
+        movieLocalDataSource.updateMovie(movie)
+        return Result.success(Unit)
     }
 
 }

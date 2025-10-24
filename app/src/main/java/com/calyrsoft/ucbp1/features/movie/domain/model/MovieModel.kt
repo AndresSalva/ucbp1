@@ -9,5 +9,6 @@ data class MovieModel(
     val pathUrl: UrlPath,
     val title: String,
     val rating: Int = 0,
-    val overview: String
+    val overview: String,
+    val isFavorite: Boolean = false
 )

@@ -13,4 +13,18 @@ class MovieLocalDataSource ( val dao: IMovieDao
         suspend fun getRatingForMovie(movieId: Int): Int {
             return dao.getRatingForMovie(movieId) ?: 0
         }
+
+        suspend fun getMovie(movieId: Int): com.calyrsoft.ucbp1.features.movie.data.database.entity.MovieEntity? {
+            return dao.getMovie(movieId)
+        }
+
+        suspend fun updateMovie(movie: com.calyrsoft.ucbp1.features.movie.domain.model.MovieModel) {
+            val movieEntity = MovieEntity(
+                id = movie.id,
+                rate = movie.rating,
+                title = movie.title,
+                isFavorite = movie.isFavorite
+            )
+            dao.insert(movieEntity)
+        }
     }

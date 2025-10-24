@@ -17,7 +17,12 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         database.execSQL("UPDATE movies SET title = '' WHERE title IS NULL")
     }
 }
-@Database(entities = [DollarEntity::class, MovieEntity::class], version = 2)
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE `movies` ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0")
+    }
+}
+@Database(entities = [DollarEntity::class, MovieEntity::class], version = 3)
 abstract class AppRoomDatabase : RoomDatabase() {
     abstract fun dollarDao(): IDollarDao
     abstract fun movieDao(): IMovieDao
@@ -32,7 +37,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
             // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, AppRoomDatabase::class.java, "dollar_db")
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                     .also { Instance = it }
             }

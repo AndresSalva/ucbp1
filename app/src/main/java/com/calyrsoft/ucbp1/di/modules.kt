@@ -138,7 +138,9 @@ val appModule = module {
     single<IMoviesRepository> { MovieRepository(get(), get()) }
     factory { FetchPopularMoviesUseCase(get()) }
     factory { RateMovieUseCase(get()) }
+    factory { com.calyrsoft.ucbp1.features.movie.domain.usecase.UpdateMovieUseCase(get()) }
     viewModel{ PopularMoviesViewModel(get(), get()) }
+    viewModel{ com.calyrsoft.ucbp1.features.movie.presentation.MovieDetailViewModel(get()) }
 
     viewModel { NavigationViewModel() }
     single { LoginDataStore(androidContext()) }

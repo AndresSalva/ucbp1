@@ -16,4 +16,7 @@ data class MovieEntity(
     @ColumnInfo(name = "title")
     var title: String? = "",
 
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false,
+
     )

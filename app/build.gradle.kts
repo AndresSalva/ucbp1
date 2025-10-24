@@ -40,11 +40,17 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets {
+        getByName("androidTest") {
+            assets.srcDir(File(project.projectDir, "schemas"))
+        }
+    }
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -52,6 +58,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.firebase.database)
     implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
@@ -77,7 +84,7 @@ dependencies {
     implementation(libs.bundles.local)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
-    testImplementation(libs.room.testing)
+    androidTestImplementation(libs.room.testing)
 
     implementation(libs.datastore)
 
