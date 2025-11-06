@@ -90,6 +90,6 @@ dependencies {
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-
+    implementation(libs.androidx.work.runtime.ktx)
 
 }
